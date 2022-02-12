@@ -1,5 +1,13 @@
 import { getApps, initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+} from 'firebase/firestore';
+
+import shops from '../../assets/data/shops.json';
 
 import {
   API_KEY,
@@ -28,6 +36,24 @@ if (!getApps().length) {
 
   initializeApp(firebaseConfig);
 }
+
+export const getInitShops = async () => {
+  const firestore = getFirestore();
+  const response = await Promise.all(
+    shops.map(async (shop) => {
+      setDoc(doc(firestore, 'shops', shop.id.toString()), {
+        name: shop.name,
+        place: shop.place,
+        imageUrl: shop.imageUrl,
+        score: shop.score,
+      });
+    })
+  );
+  console.log(response);
+  console.timeEnd('promise_all');
+
+  return true;
+};
 
 export const getShops = async () => {
   const firestore = getFirestore();
