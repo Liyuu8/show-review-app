@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
 
 import { getShops } from './src/lib/firebase';
 import { Shop } from './types/shop';
+import ShopReviewItem from './src/components/ShopReviewItem';
 
 export default function App() {
   const [shops, setShops] = useState<Shop[]>([]);
@@ -12,19 +12,17 @@ export default function App() {
     (async () => setShops(await getShops()))();
   }, []);
 
-  const shopItem = shops.map((shop, index) => (
-    <View key={index.toString()} style={{ marginTop: 20 }}>
-      <Text>{shop.name}</Text>
-      <Text>{shop.place}</Text>
-    </View>
-  ));
-
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      {shopItem}
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={shops}
+        renderItem={({ item }: { item: Shop }) => (
+          <ShopReviewItem shop={item} />
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+      />
+    </SafeAreaView>
   );
 }
 

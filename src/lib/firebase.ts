@@ -39,7 +39,7 @@ if (!getApps().length) {
 
 export const getInitShops = async () => {
   const firestore = getFirestore();
-  const response = await Promise.all(
+  await Promise.all(
     shops.map(async (shop) => {
       setDoc(doc(firestore, 'shops', shop.id.toString()), {
         name: shop.name,
@@ -49,8 +49,6 @@ export const getInitShops = async () => {
       });
     })
   );
-  console.log(response);
-  console.timeEnd('promise_all');
 
   return true;
 };
