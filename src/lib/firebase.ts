@@ -5,6 +5,8 @@ import {
   getDocs,
   setDoc,
   doc,
+  orderBy,
+  query,
 } from 'firebase/firestore';
 
 import shops from '../../assets/data/shops.json';
@@ -55,7 +57,9 @@ export const getInitShops = async () => {
 
 export const getShops = async () => {
   const firestore = getFirestore();
-  const docsSnap = await getDocs(collection(firestore, 'shops'));
+  const docsSnap = await getDocs(
+    query(collection(firestore, 'shops'), orderBy('score', 'desc'))
+  );
   const shops = docsSnap.docs.map((doc) => doc.data() as Shop);
 
   return shops;
