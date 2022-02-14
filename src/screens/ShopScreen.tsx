@@ -5,6 +5,7 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 
 import { RootStackParamList } from '../../types/navigation';
 import ShopDetail from '../components/ShopDetail';
+import FloatingActionButton from '../components/FloatingActionButton';
 
 const ShopScreen = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'Shop'>>();
@@ -19,6 +20,10 @@ const ShopScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ShopDetail shop={shop} />
+      <FloatingActionButton
+        iconName="plus"
+        onPress={() => navigation.navigate('CreateReview', { shop })}
+      />
     </SafeAreaView>
   );
 };
@@ -27,7 +32,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
 });
 
